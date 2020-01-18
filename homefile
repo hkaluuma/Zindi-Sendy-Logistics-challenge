@@ -1,0 +1,877 @@
+# import important modules 
+
+​
+
+import pandas as pd
+
+import numpy as np
+
+import matplotlib.pyplot as plt
+
+import seaborn as sns
+
+import warnings
+
+warnings.filterwarnings('ignore')
+
+%matplotlib inline
+
+# Import data
+
+train_data = pd.read_csv('Train.csv')
+
+test_data = pd.read_csv('Test.csv')
+
+#train_data.info
+
+test_data.head().T
+
+	0 	1 	2 	3 	4
+Order No 	Order_No_19248 	Order_No_12736 	Order_No_768 	Order_No_15332 	Order_No_21373
+User Id 	User_Id_3355 	User_Id_3647 	User_Id_2154 	User_Id_2910 	User_Id_1205
+Vehicle Type 	Bike 	Bike 	Bike 	Bike 	Bike
+Platform Type 	3 	3 	3 	3 	3
+Personal or Business 	Business 	Business 	Business 	Business 	Business
+Placement - Day of Month 	27 	17 	27 	17 	11
+Placement - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Placement - Time 	4:44:10 PM 	12:57:35 PM 	11:08:14 AM 	1:51:35 PM 	11:30:28 AM
+Confirmation - Day of Month 	27 	17 	27 	17 	11
+Confirmation - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Confirmation - Time 	4:44:29 PM 	12:59:17 PM 	11:25:05 AM 	1:53:27 PM 	11:34:45 AM
+Arrival at Pickup - Day of Month 	27 	17 	27 	17 	11
+Arrival at Pickup - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Arrival at Pickup - Time 	4:53:04 PM 	1:20:27 PM 	11:33:20 AM 	2:02:41 PM 	11:47:19 AM
+Pickup - Day of Month 	27 	17 	27 	17 	11
+Pickup - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Pickup - Time 	5:06:47 PM 	1:25:37 PM 	11:57:54 AM 	2:16:52 PM 	11:56:04 AM
+Distance (KM) 	8 	5 	5 	5 	6
+Temperature 	NaN 	NaN 	22.8 	24.5 	24.4
+Precipitation in millimeters 	NaN 	NaN 	NaN 	NaN 	NaN
+Pickup Lat 	-1.33327 	-1.27264 	-1.29089 	-1.2905 	-1.28108
+Pickup Long 	36.8708 	36.7947 	36.823 	36.8096 	36.8144
+Destination Lat 	-1.30525 	-1.27701 	-1.27657 	-1.30338 	-1.26647
+Destination Long 	36.8224 	36.8239 	36.8514 	36.7907 	36.7922
+Rider Id 	Rider_Id_192 	Rider_Id_868 	Rider_Id_26 	Rider_Id_685 	Rider_Id_858
+
+train_data.head().T
+
+	0 	1 	2 	3 	4
+Order No 	Order_No_4211 	Order_No_25375 	Order_No_1899 	Order_No_9336 	Order_No_27883
+User Id 	User_Id_633 	User_Id_2285 	User_Id_265 	User_Id_1402 	User_Id_1737
+Vehicle Type 	Bike 	Bike 	Bike 	Bike 	Bike
+Platform Type 	3 	3 	3 	3 	1
+Personal or Business 	Business 	Personal 	Business 	Business 	Personal
+Placement - Day of Month 	9 	12 	30 	15 	13
+Placement - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Placement - Time 	9:35:46 AM 	11:16:16 AM 	12:39:25 PM 	9:25:34 AM 	9:55:18 AM
+Confirmation - Day of Month 	9 	12 	30 	15 	13
+Confirmation - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Confirmation - Time 	9:40:10 AM 	11:23:21 AM 	12:42:44 PM 	9:26:05 AM 	9:56:18 AM
+Arrival at Pickup - Day of Month 	9 	12 	30 	15 	13
+Arrival at Pickup - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Arrival at Pickup - Time 	10:04:47 AM 	11:40:22 AM 	12:49:34 PM 	9:37:56 AM 	10:03:53 AM
+Pickup - Day of Month 	9 	12 	30 	15 	13
+Pickup - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Pickup - Time 	10:27:30 AM 	11:44:09 AM 	12:53:03 PM 	9:43:06 AM 	10:05:23 AM
+Arrival at Destination - Day of Month 	9 	12 	30 	15 	13
+Arrival at Destination - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Arrival at Destination - Time 	10:39:55 AM 	12:17:22 PM 	1:00:38 PM 	10:05:27 AM 	10:25:37 AM
+Distance (KM) 	4 	16 	3 	9 	9
+Temperature 	20.4 	26.4 	NaN 	19.2 	15.4
+Precipitation in millimeters 	NaN 	NaN 	NaN 	NaN 	NaN
+Pickup Lat 	-1.31775 	-1.35145 	-1.30828 	-1.2813 	-1.2666
+Pickup Long 	36.8304 	36.8993 	36.8434 	36.8324 	36.7921
+Destination Lat 	-1.30041 	-1.295 	-1.30092 	-1.25715 	-1.29504
+Destination Long 	36.8297 	36.8144 	36.8282 	36.7951 	36.8098
+Rider Id 	Rider_Id_432 	Rider_Id_856 	Rider_Id_155 	Rider_Id_855 	Rider_Id_770
+Time from Pickup to Arrival 	745 	1993 	455 	1341 	1214
+
+#train_data.dtypes
+
+train_data.shape
+
+(21201, 29)
+
+test_data.shape
+
+(7068, 25)
+
+#Dropping Columns that don't affect the target
+
+train_data.drop(['Vehicle Type'], axis=1 , inplace=True)
+
+train_data.shape
+
+(21201, 28)
+
+#Dropping Columns that don't affect the target
+
+test_data.drop(['Vehicle Type'], axis=1 , inplace=True)
+
+test_data.shape
+
+(7068, 24)
+
+#import preprocessing module 
+
+from sklearn.preprocessing import LabelEncoder
+
+​
+
+# Convert target label to numerical Data
+
+le = LabelEncoder()
+
+train_data['Personal or Business'] = le.fit_transform(train_data['Personal or Business'])
+
+#import preprocessing module 
+
+from sklearn.preprocessing import LabelEncoder
+
+​
+
+# Convert target label to numerical Data
+
+le = LabelEncoder()
+
+test_data['Personal or Business'] = le.fit_transform(test_data['Personal or Business'])
+
+train_data.head().T
+
+#test_data.head().T
+
+	0 	1 	2 	3 	4
+Order No 	Order_No_4211 	Order_No_25375 	Order_No_1899 	Order_No_9336 	Order_No_27883
+User Id 	User_Id_633 	User_Id_2285 	User_Id_265 	User_Id_1402 	User_Id_1737
+Platform Type 	3 	3 	3 	3 	1
+Personal or Business 	0 	1 	0 	0 	1
+Placement - Day of Month 	9 	12 	30 	15 	13
+Placement - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Placement - Time 	9:35:46 AM 	11:16:16 AM 	12:39:25 PM 	9:25:34 AM 	9:55:18 AM
+Confirmation - Day of Month 	9 	12 	30 	15 	13
+Confirmation - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Confirmation - Time 	9:40:10 AM 	11:23:21 AM 	12:42:44 PM 	9:26:05 AM 	9:56:18 AM
+Arrival at Pickup - Day of Month 	9 	12 	30 	15 	13
+Arrival at Pickup - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Arrival at Pickup - Time 	10:04:47 AM 	11:40:22 AM 	12:49:34 PM 	9:37:56 AM 	10:03:53 AM
+Pickup - Day of Month 	9 	12 	30 	15 	13
+Pickup - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Pickup - Time 	10:27:30 AM 	11:44:09 AM 	12:53:03 PM 	9:43:06 AM 	10:05:23 AM
+Arrival at Destination - Day of Month 	9 	12 	30 	15 	13
+Arrival at Destination - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Arrival at Destination - Time 	10:39:55 AM 	12:17:22 PM 	1:00:38 PM 	10:05:27 AM 	10:25:37 AM
+Distance (KM) 	4 	16 	3 	9 	9
+Temperature 	20.4 	26.4 	NaN 	19.2 	15.4
+Precipitation in millimeters 	NaN 	NaN 	NaN 	NaN 	NaN
+Pickup Lat 	-1.31775 	-1.35145 	-1.30828 	-1.2813 	-1.2666
+Pickup Long 	36.8304 	36.8993 	36.8434 	36.8324 	36.7921
+Destination Lat 	-1.30041 	-1.295 	-1.30092 	-1.25715 	-1.29504
+Destination Long 	36.8297 	36.8144 	36.8282 	36.7951 	36.8098
+Rider Id 	Rider_Id_432 	Rider_Id_856 	Rider_Id_155 	Rider_Id_855 	Rider_Id_770
+Time from Pickup to Arrival 	745 	1993 	455 	1341 	1214
+
+#Filling the Missing/Null Values with mean for temperature
+
+train_data = train_data.fillna(train_data.mean())
+
+#Filling the Missing/Null Values with mean for temperature
+
+test_data = test_data.fillna(test_data.mean())
+
+#Checking whether there are still null values
+
+#train_data.isnull().sum()
+
+#Checking whether there are still null values
+
+test_data.isnull().sum()
+
+Order No                                0
+User Id                                 0
+Platform Type                           0
+Personal or Business                    0
+Placement - Day of Month                0
+Placement - Weekday (Mo = 1)            0
+Placement - Time                        0
+Confirmation - Day of Month             0
+Confirmation - Weekday (Mo = 1)         0
+Confirmation - Time                     0
+Arrival at Pickup - Day of Month        0
+Arrival at Pickup - Weekday (Mo = 1)    0
+Arrival at Pickup - Time                0
+Pickup - Day of Month                   0
+Pickup - Weekday (Mo = 1)               0
+Pickup - Time                           0
+Distance (KM)                           0
+Temperature                             0
+Precipitation in millimeters            0
+Pickup Lat                              0
+Pickup Long                             0
+Destination Lat                         0
+Destination Long                        0
+Rider Id                                0
+dtype: int64
+
+train_data.rename(columns={'Order No':'Order_No','User Id':'User_Id','Rider Id':'Rider_Id'},inplace=True)
+
+test_data.rename(columns={'Order No':'Order_No','User Id':'User_Id','Rider Id':'Rider_Id'},inplace=True)
+
+#train_data.head().columns
+
+test_data.head().columns
+
+##we have ended here
+
+Index(['Order_No', 'User_Id', 'Platform Type', 'Personal or Business',
+       'Placement - Day of Month', 'Placement - Weekday (Mo = 1)',
+       'Placement - Time', 'Confirmation - Day of Month',
+       'Confirmation - Weekday (Mo = 1)', 'Confirmation - Time',
+       'Arrival at Pickup - Day of Month',
+       'Arrival at Pickup - Weekday (Mo = 1)', 'Arrival at Pickup - Time',
+       'Pickup - Day of Month', 'Pickup - Weekday (Mo = 1)', 'Pickup - Time',
+       'Distance (KM)', 'Temperature', 'Precipitation in millimeters',
+       'Pickup Lat', 'Pickup Long', 'Destination Lat', 'Destination Long',
+       'Rider_Id'],
+      dtype='object')
+
+test_data.shape
+
+(7068, 24)
+
+train_data.shape
+
+(21201, 28)
+
+# The str method maps the following function to each entry as a string
+
+train_data['User_Id'] = train_data.User_Id.str.replace('User_Id_', '')
+
+train_data['Order_No'] = train_data.Order_No.str.replace('Order_No_', '')
+
+train_data['Rider_Id'] = train_data.Rider_Id.str.replace('Rider_Id_', '')
+
+# alternatively
+
+# data['species'] = data.species.apply(lambda r: r.replace('Iris-', ''))
+
+train_data.head().T
+
+	0 	1 	2 	3 	4
+Order_No 	4211 	25375 	1899 	9336 	27883
+User_Id 	633 	2285 	265 	1402 	1737
+Platform Type 	3 	3 	3 	3 	1
+Personal or Business 	0 	1 	0 	0 	1
+Placement - Day of Month 	9 	12 	30 	15 	13
+Placement - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Placement - Time 	9:35:46 AM 	11:16:16 AM 	12:39:25 PM 	9:25:34 AM 	9:55:18 AM
+Confirmation - Day of Month 	9 	12 	30 	15 	13
+Confirmation - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Confirmation - Time 	9:40:10 AM 	11:23:21 AM 	12:42:44 PM 	9:26:05 AM 	9:56:18 AM
+Arrival at Pickup - Day of Month 	9 	12 	30 	15 	13
+Arrival at Pickup - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Arrival at Pickup - Time 	10:04:47 AM 	11:40:22 AM 	12:49:34 PM 	9:37:56 AM 	10:03:53 AM
+Pickup - Day of Month 	9 	12 	30 	15 	13
+Pickup - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Pickup - Time 	10:27:30 AM 	11:44:09 AM 	12:53:03 PM 	9:43:06 AM 	10:05:23 AM
+Arrival at Destination - Day of Month 	9 	12 	30 	15 	13
+Arrival at Destination - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Arrival at Destination - Time 	10:39:55 AM 	12:17:22 PM 	1:00:38 PM 	10:05:27 AM 	10:25:37 AM
+Distance (KM) 	4 	16 	3 	9 	9
+Temperature 	20.4 	26.4 	23.2589 	19.2 	15.4
+Precipitation in millimeters 	7.9058 	7.9058 	7.9058 	7.9058 	7.9058
+Pickup Lat 	-1.31775 	-1.35145 	-1.30828 	-1.2813 	-1.2666
+Pickup Long 	36.8304 	36.8993 	36.8434 	36.8324 	36.7921
+Destination Lat 	-1.30041 	-1.295 	-1.30092 	-1.25715 	-1.29504
+Destination Long 	36.8297 	36.8144 	36.8282 	36.7951 	36.8098
+Rider_Id 	432 	856 	155 	855 	770
+Time from Pickup to Arrival 	745 	1993 	455 	1341 	1214
+
+# The str method maps the following function to each entry as a string
+
+test_data['User_Id'] = test_data.User_Id.str.replace('User_Id_', '')
+
+test_data['Order_No'] = test_data.Order_No.str.replace('Order_No_', '')
+
+test_data['Rider_Id'] = test_data.Rider_Id.str.replace('Rider_Id_', '')
+
+# alternatively
+
+# data['species'] = data.species.apply(lambda r: r.replace('Iris-', ''))
+
+​
+
+train_data.head().T
+
+	0 	1 	2 	3 	4
+Order_No 	4211 	25375 	1899 	9336 	27883
+User_Id 	633 	2285 	265 	1402 	1737
+Platform Type 	3 	3 	3 	3 	1
+Personal or Business 	0 	1 	0 	0 	1
+Placement - Day of Month 	9 	12 	30 	15 	13
+Placement - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Placement - Time 	9:35:46 AM 	11:16:16 AM 	12:39:25 PM 	9:25:34 AM 	9:55:18 AM
+Confirmation - Day of Month 	9 	12 	30 	15 	13
+Confirmation - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Confirmation - Time 	9:40:10 AM 	11:23:21 AM 	12:42:44 PM 	9:26:05 AM 	9:56:18 AM
+Arrival at Pickup - Day of Month 	9 	12 	30 	15 	13
+Arrival at Pickup - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Arrival at Pickup - Time 	10:04:47 AM 	11:40:22 AM 	12:49:34 PM 	9:37:56 AM 	10:03:53 AM
+Pickup - Day of Month 	9 	12 	30 	15 	13
+Pickup - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Pickup - Time 	10:27:30 AM 	11:44:09 AM 	12:53:03 PM 	9:43:06 AM 	10:05:23 AM
+Arrival at Destination - Day of Month 	9 	12 	30 	15 	13
+Arrival at Destination - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Arrival at Destination - Time 	10:39:55 AM 	12:17:22 PM 	1:00:38 PM 	10:05:27 AM 	10:25:37 AM
+Distance (KM) 	4 	16 	3 	9 	9
+Temperature 	20.4 	26.4 	23.2589 	19.2 	15.4
+Precipitation in millimeters 	7.9058 	7.9058 	7.9058 	7.9058 	7.9058
+Pickup Lat 	-1.31775 	-1.35145 	-1.30828 	-1.2813 	-1.2666
+Pickup Long 	36.8304 	36.8993 	36.8434 	36.8324 	36.7921
+Destination Lat 	-1.30041 	-1.295 	-1.30092 	-1.25715 	-1.29504
+Destination Long 	36.8297 	36.8144 	36.8282 	36.7951 	36.8098
+Rider_Id 	432 	856 	155 	855 	770
+Time from Pickup to Arrival 	745 	1993 	455 	1341 	1214
+
+train_data.rename(columns={'Placement - Time':'Placement_Time','Confirmation - Time':'Confirmation_Time','Arrival at Pickup - Time':'Arrival_at_Pickup_Time','Pickup - Time':'Pickup_Time','Arrival at Destination - Time':'Arrival_at_Destination_Time'},inplace=True)
+
+train_data.head().columns
+
+Index(['Order_No', 'User_Id', 'Platform Type', 'Personal or Business',
+       'Placement - Day of Month', 'Placement - Weekday (Mo = 1)',
+       'Placement_Time', 'Confirmation - Day of Month',
+       'Confirmation - Weekday (Mo = 1)', 'Confirmation_Time',
+       'Arrival at Pickup - Day of Month',
+       'Arrival at Pickup - Weekday (Mo = 1)', 'Arrival_at_Pickup_Time',
+       'Pickup - Day of Month', 'Pickup - Weekday (Mo = 1)', 'Pickup_Time',
+       'Arrival at Destination - Day of Month',
+       'Arrival at Destination - Weekday (Mo = 1)',
+       'Arrival_at_Destination_Time', 'Distance (KM)', 'Temperature',
+       'Precipitation in millimeters', 'Pickup Lat', 'Pickup Long',
+       'Destination Lat', 'Destination Long', 'Rider_Id',
+       'Time from Pickup to Arrival'],
+      dtype='object')
+
+test_data.head().T
+
+	0 	1 	2 	3 	4
+Order_No 	19248 	12736 	768 	15332 	21373
+User_Id 	3355 	3647 	2154 	2910 	1205
+Platform Type 	3 	3 	3 	3 	3
+Personal or Business 	0 	0 	0 	0 	0
+Placement - Day of Month 	27 	17 	27 	17 	11
+Placement - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Placement - Time 	4:44:10 PM 	12:57:35 PM 	11:08:14 AM 	1:51:35 PM 	11:30:28 AM
+Confirmation - Day of Month 	27 	17 	27 	17 	11
+Confirmation - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Confirmation - Time 	4:44:29 PM 	12:59:17 PM 	11:25:05 AM 	1:53:27 PM 	11:34:45 AM
+Arrival at Pickup - Day of Month 	27 	17 	27 	17 	11
+Arrival at Pickup - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Arrival at Pickup - Time 	4:53:04 PM 	1:20:27 PM 	11:33:20 AM 	2:02:41 PM 	11:47:19 AM
+Pickup - Day of Month 	27 	17 	27 	17 	11
+Pickup - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Pickup - Time 	5:06:47 PM 	1:25:37 PM 	11:57:54 AM 	2:16:52 PM 	11:56:04 AM
+Distance (KM) 	8 	5 	5 	5 	6
+Temperature 	23.2461 	23.2461 	22.8 	24.5 	24.4
+Precipitation in millimeters 	6.65176 	6.65176 	6.65176 	6.65176 	6.65176
+Pickup Lat 	-1.33327 	-1.27264 	-1.29089 	-1.2905 	-1.28108
+Pickup Long 	36.8708 	36.7947 	36.823 	36.8096 	36.8144
+Destination Lat 	-1.30525 	-1.27701 	-1.27657 	-1.30338 	-1.26647
+Destination Long 	36.8224 	36.8239 	36.8514 	36.7907 	36.7922
+Rider_Id 	192 	868 	26 	685 	858
+
+test_data.rename(columns={'Placement - Time':'Placement_Time','Confirmation - Time':'Confirmation_Time','Arrival at Pickup - Time':'Arrival_at_Pickup_Time','Pickup - Time':'Pickup_Time'},inplace=True)
+
+test_data.head().T
+
+	0 	1 	2 	3 	4
+Order_No 	19248 	12736 	768 	15332 	21373
+User_Id 	3355 	3647 	2154 	2910 	1205
+Platform Type 	3 	3 	3 	3 	3
+Personal or Business 	0 	0 	0 	0 	0
+Placement - Day of Month 	27 	17 	27 	17 	11
+Placement - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Placement_Time 	4:44:10 PM 	12:57:35 PM 	11:08:14 AM 	1:51:35 PM 	11:30:28 AM
+Confirmation - Day of Month 	27 	17 	27 	17 	11
+Confirmation - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Confirmation_Time 	4:44:29 PM 	12:59:17 PM 	11:25:05 AM 	1:53:27 PM 	11:34:45 AM
+Arrival at Pickup - Day of Month 	27 	17 	27 	17 	11
+Arrival at Pickup - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Arrival_at_Pickup_Time 	4:53:04 PM 	1:20:27 PM 	11:33:20 AM 	2:02:41 PM 	11:47:19 AM
+Pickup - Day of Month 	27 	17 	27 	17 	11
+Pickup - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Pickup_Time 	5:06:47 PM 	1:25:37 PM 	11:57:54 AM 	2:16:52 PM 	11:56:04 AM
+Distance (KM) 	8 	5 	5 	5 	6
+Temperature 	23.2461 	23.2461 	22.8 	24.5 	24.4
+Precipitation in millimeters 	6.65176 	6.65176 	6.65176 	6.65176 	6.65176
+Pickup Lat 	-1.33327 	-1.27264 	-1.29089 	-1.2905 	-1.28108
+Pickup Long 	36.8708 	36.7947 	36.823 	36.8096 	36.8144
+Destination Lat 	-1.30525 	-1.27701 	-1.27657 	-1.30338 	-1.26647
+Destination Long 	36.8224 	36.8239 	36.8514 	36.7907 	36.7922
+Rider_Id 	192 	868 	26 	685 	858
+
+train_data['Placement_Time'] = pd.to_datetime(train_data.Placement_Time)
+
+train_data['Confirmation_Time'] = pd.to_datetime(train_data.Confirmation_Time)
+
+train_data['Arrival_at_Pickup_Time'] = pd.to_datetime(train_data.Arrival_at_Pickup_Time)
+
+train_data['Pickup_Time'] = pd.to_datetime(train_data.Pickup_Time)
+
+train_data['Arrival_at_Destination_Time'] = pd.to_datetime(train_data.Arrival_at_Destination_Time)
+
+train_data.head().T
+
+	0 	1 	2 	3 	4
+Order_No 	4211 	25375 	1899 	9336 	27883
+User_Id 	633 	2285 	265 	1402 	1737
+Platform Type 	3 	3 	3 	3 	1
+Personal or Business 	0 	1 	0 	0 	1
+Placement - Day of Month 	9 	12 	30 	15 	13
+Placement - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Placement_Time 	2019-11-22 09:35:46 	2019-11-22 11:16:16 	2019-11-22 12:39:25 	2019-11-22 09:25:34 	2019-11-22 09:55:18
+Confirmation - Day of Month 	9 	12 	30 	15 	13
+Confirmation - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Confirmation_Time 	2019-11-22 09:40:10 	2019-11-22 11:23:21 	2019-11-22 12:42:44 	2019-11-22 09:26:05 	2019-11-22 09:56:18
+Arrival at Pickup - Day of Month 	9 	12 	30 	15 	13
+Arrival at Pickup - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Arrival_at_Pickup_Time 	2019-11-22 10:04:47 	2019-11-22 11:40:22 	2019-11-22 12:49:34 	2019-11-22 09:37:56 	2019-11-22 10:03:53
+Pickup - Day of Month 	9 	12 	30 	15 	13
+Pickup - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Pickup_Time 	2019-11-22 10:27:30 	2019-11-22 11:44:09 	2019-11-22 12:53:03 	2019-11-22 09:43:06 	2019-11-22 10:05:23
+Arrival at Destination - Day of Month 	9 	12 	30 	15 	13
+Arrival at Destination - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Arrival_at_Destination_Time 	2019-11-22 10:39:55 	2019-11-22 12:17:22 	2019-11-22 13:00:38 	2019-11-22 10:05:27 	2019-11-22 10:25:37
+Distance (KM) 	4 	16 	3 	9 	9
+Temperature 	20.4 	26.4 	23.2589 	19.2 	15.4
+Precipitation in millimeters 	7.9058 	7.9058 	7.9058 	7.9058 	7.9058
+Pickup Lat 	-1.31775 	-1.35145 	-1.30828 	-1.2813 	-1.2666
+Pickup Long 	36.8304 	36.8993 	36.8434 	36.8324 	36.7921
+Destination Lat 	-1.30041 	-1.295 	-1.30092 	-1.25715 	-1.29504
+Destination Long 	36.8297 	36.8144 	36.8282 	36.7951 	36.8098
+Rider_Id 	432 	856 	155 	855 	770
+Time from Pickup to Arrival 	745 	1993 	455 	1341 	1214
+
+test_data['Placement_Time'] = pd.to_datetime(test_data.Placement_Time)
+
+test_data['Confirmation_Time'] = pd.to_datetime(test_data.Confirmation_Time)
+
+test_data['Arrival_at_Pickup_Time'] = pd.to_datetime(test_data.Arrival_at_Pickup_Time)
+
+test_data['Pickup_Time'] = pd.to_datetime(test_data.Pickup_Time)
+
+#train_data['Placement_Time'] = train_data.Placement_Time.dt.hour
+
+train_data['Confirmation_Time'] = train_data.Confirmation_Time.dt.hour
+
+train_data['Arrival_at_Pickup_Time'] = train_data.Arrival_at_Pickup_Time.dt.hour
+
+train_data['Pickup_Time'] = train_data.Pickup_Time.dt.hour
+
+train_data['Arrival_at_Destination_Time'] = train_data.Arrival_at_Destination_Time.dt.hour
+
+​
+
+test_data['Confirmation_Time'] = test_data.Confirmation_Time.dt.hour
+
+test_data['Arrival_at_Pickup_Time'] = test_data.Arrival_at_Pickup_Time.dt.hour
+
+test_data['Pickup_Time'] = test_data.Pickup_Time.dt.hour
+
+test_data['Placement_Time'] = test_data.Placement_Time.dt.hour
+
+test_data.head().T
+
+	0 	1 	2 	3 	4
+Order_No 	19248 	12736 	768 	15332 	21373
+User_Id 	3355 	3647 	2154 	2910 	1205
+Platform Type 	3 	3 	3 	3 	3
+Personal or Business 	0 	0 	0 	0 	0
+Placement - Day of Month 	27 	17 	27 	17 	11
+Placement - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Placement_Time 	16 	12 	11 	13 	11
+Confirmation - Day of Month 	27 	17 	27 	17 	11
+Confirmation - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Confirmation_Time 	16 	12 	11 	13 	11
+Arrival at Pickup - Day of Month 	27 	17 	27 	17 	11
+Arrival at Pickup - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Arrival_at_Pickup_Time 	16 	13 	11 	14 	11
+Pickup - Day of Month 	27 	17 	27 	17 	11
+Pickup - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Pickup_Time 	17 	13 	11 	14 	11
+Distance (KM) 	8 	5 	5 	5 	6
+Temperature 	23.2461 	23.2461 	22.8 	24.5 	24.4
+Precipitation in millimeters 	6.65176 	6.65176 	6.65176 	6.65176 	6.65176
+Pickup Lat 	-1.33327 	-1.27264 	-1.29089 	-1.2905 	-1.28108
+Pickup Long 	36.8708 	36.7947 	36.823 	36.8096 	36.8144
+Destination Lat 	-1.30525 	-1.27701 	-1.27657 	-1.30338 	-1.26647
+Destination Long 	36.8224 	36.8239 	36.8514 	36.7907 	36.7922
+Rider_Id 	192 	868 	26 	685 	858
+
+train_data['Placement_Time'] = train_data.Placement_Time.dt.hour
+
+train_data.head().T
+
+	0 	1 	2 	3 	4
+Order_No 	4211 	25375 	1899 	9336 	27883
+User_Id 	633 	2285 	265 	1402 	1737
+Platform Type 	3 	3 	3 	3 	1
+Personal or Business 	0 	1 	0 	0 	1
+Placement - Day of Month 	9 	12 	30 	15 	13
+Placement - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Placement_Time 	9 	11 	12 	9 	9
+Confirmation - Day of Month 	9 	12 	30 	15 	13
+Confirmation - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Confirmation_Time 	9 	11 	12 	9 	9
+Arrival at Pickup - Day of Month 	9 	12 	30 	15 	13
+Arrival at Pickup - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Arrival_at_Pickup_Time 	10 	11 	12 	9 	10
+Pickup - Day of Month 	9 	12 	30 	15 	13
+Pickup - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Pickup_Time 	10 	11 	12 	9 	10
+Arrival at Destination - Day of Month 	9 	12 	30 	15 	13
+Arrival at Destination - Weekday (Mo = 1) 	5 	5 	2 	5 	1
+Arrival_at_Destination_Time 	10 	12 	13 	10 	10
+Distance (KM) 	4 	16 	3 	9 	9
+Temperature 	20.4 	26.4 	23.2589 	19.2 	15.4
+Precipitation in millimeters 	7.9058 	7.9058 	7.9058 	7.9058 	7.9058
+Pickup Lat 	-1.31775 	-1.35145 	-1.30828 	-1.2813 	-1.2666
+Pickup Long 	36.8304 	36.8993 	36.8434 	36.8324 	36.7921
+Destination Lat 	-1.30041 	-1.295 	-1.30092 	-1.25715 	-1.29504
+Destination Long 	36.8297 	36.8144 	36.8282 	36.7951 	36.8098
+Rider_Id 	432 	856 	155 	855 	770
+Time from Pickup to Arrival 	745 	1993 	455 	1341 	1214
+
+test_data.head().T
+
+#test_data.shape
+
+	0 	1 	2 	3 	4
+Order_No 	0.680984 	0.450593 	0.027171 	0.542438 	0.756165
+User_Id 	0.887212 	0.964522 	0.569235 	0.769394 	0.317977
+Platform Type 	0.666667 	0.666667 	0.666667 	0.666667 	0.666667
+Personal or Business 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000
+Placement - Day of Month 	0.866667 	0.533333 	0.866667 	0.533333 	0.333333
+Placement - Weekday (Mo = 1) 	0.333333 	0.666667 	0.500000 	0.000000 	0.166667
+Placement_Time 	0.625000 	0.375000 	0.312500 	0.437500 	0.312500
+Confirmation - Day of Month 	0.866667 	0.533333 	0.866667 	0.533333 	0.333333
+Confirmation - Weekday (Mo = 1) 	0.333333 	0.666667 	0.500000 	0.000000 	0.166667
+Confirmation_Time 	0.625000 	0.375000 	0.312500 	0.437500 	0.312500
+Arrival at Pickup - Day of Month 	0.866667 	0.533333 	0.866667 	0.533333 	0.333333
+Arrival at Pickup - Weekday (Mo = 1) 	0.333333 	0.666667 	0.500000 	0.000000 	0.166667
+Arrival_at_Pickup_Time 	0.600000 	0.400000 	0.266667 	0.466667 	0.266667
+Pickup - Day of Month 	0.866667 	0.533333 	0.866667 	0.533333 	0.333333
+Pickup - Weekday (Mo = 1) 	0.333333 	0.666667 	0.500000 	0.000000 	0.166667
+Pickup_Time 	0.625000 	0.375000 	0.250000 	0.437500 	0.250000
+Distance (KM) 	0.152174 	0.086957 	0.086957 	0.086957 	0.108696
+Temperature 	0.531541 	0.531541 	0.507937 	0.597884 	0.592593
+Precipitation in millimeters 	0.066179 	0.066179 	0.066179 	0.066179 	0.066179
+Pickup Lat 	0.351511 	0.564149 	0.500132 	0.501502 	0.534546
+Pickup Long 	0.643461 	0.417816 	0.501584 	0.462070 	0.476235
+Destination Lat 	0.299173 	0.371141 	0.372245 	0.303930 	0.397999
+Destination Long 	0.482393 	0.486387 	0.558690 	0.398835 	0.402794
+Rider_Id 	0.198537 	0.904911 	0.025078 	0.713689 	0.894462
+
+from sklearn.preprocessing import MinMaxScaler
+
+scaler = MinMaxScaler()
+
+train_data = pd.DataFrame(scaler.fit_transform(train_data), columns = train_data.columns)
+
+#Dropping Columns that don't affect the target
+
+train_data.drop(['Arrival at Destination - Day of Month','Arrival at Destination - Weekday (Mo = 1)','Arrival_at_Destination_Time'], axis=1 , inplace=True)
+
+#train_data.head().T
+
+train_data.shape
+
+(21201, 25)
+
+x_train_data = train_data.iloc[:,0:-1]
+
+x_train_data.head().T
+
+	0 	1 	2 	3 	4
+Order_No 	0.148937 	0.897655 	0.067145 	0.330244 	0.986380
+User_Id 	0.167416 	0.604337 	0.070087 	0.370801 	0.459402
+Platform Type 	0.666667 	0.666667 	0.666667 	0.666667 	0.000000
+Personal or Business 	0.000000 	1.000000 	0.000000 	0.000000 	1.000000
+Placement - Day of Month 	0.266667 	0.366667 	0.966667 	0.466667 	0.400000
+Placement - Weekday (Mo = 1) 	0.666667 	0.666667 	0.166667 	0.666667 	0.000000
+Placement_Time 	0.409091 	0.500000 	0.545455 	0.409091 	0.409091
+Confirmation - Day of Month 	0.266667 	0.366667 	0.966667 	0.466667 	0.400000
+Confirmation - Weekday (Mo = 1) 	0.666667 	0.666667 	0.166667 	0.666667 	0.000000
+Confirmation_Time 	0.409091 	0.500000 	0.545455 	0.409091 	0.409091
+Arrival at Pickup - Day of Month 	0.266667 	0.366667 	0.966667 	0.466667 	0.400000
+Arrival at Pickup - Weekday (Mo = 1) 	0.666667 	0.666667 	0.166667 	0.666667 	0.000000
+Arrival_at_Pickup_Time 	0.434783 	0.478261 	0.521739 	0.391304 	0.434783
+Pickup - Day of Month 	0.266667 	0.366667 	0.966667 	0.466667 	0.400000
+Pickup - Weekday (Mo = 1) 	0.666667 	0.666667 	0.166667 	0.666667 	0.000000
+Pickup_Time 	0.434783 	0.478261 	0.521739 	0.391304 	0.434783
+Distance (KM) 	0.062500 	0.312500 	0.041667 	0.166667 	0.166667
+Temperature 	0.440191 	0.727273 	0.576980 	0.382775 	0.200957
+Precipitation in millimeters 	0.078846 	0.078846 	0.078846 	0.078846 	0.078846
+Pickup Lat 	0.414064 	0.298315 	0.446594 	0.539277 	0.589783
+Pickup Long 	0.523818 	0.728144 	0.562490 	0.529822 	0.410453
+Destination Lat 	0.324671 	0.338174 	0.323384 	0.432799 	0.338082
+Destination Long 	0.544015 	0.506513 	0.540246 	0.459474 	0.495443
+Rider_Id 	0.450469 	0.892596 	0.161627 	0.891554 	0.802920
+
+y_train_data = train_data['Time from Pickup to Arrival']
+
+y_train_data.head().T
+
+0    0.094392
+1    0.252728
+2    0.057600
+3    0.170008
+4    0.153895
+Name: Time from Pickup to Arrival, dtype: float64
+
+#Splitting the X_data to get a percentage to use for testing the model
+
+from sklearn.model_selection import train_test_split
+
+x_train, x_test, y_train, y_test = train_test_split(x_train_data, y_train_data, test_size = 0.3, random_state = 42)
+
+#using linear regression
+
+from sklearn.linear_model import LinearRegression
+
+​
+
+#Create an instance of the class
+
+LR = LinearRegression()
+
+​
+
+#Fit the instance on the data and then predict the expected value
+
+LR = LR.fit(x_train, y_train)
+
+y_predict = LR.predict(x_test)
+
+LR.score(x_test,y_test)
+
+0.3439535616441026
+
+from sklearn.preprocessing import MinMaxScaler
+
+scaler = MinMaxScaler()
+
+test_data = pd.DataFrame(scaler.fit_transform(test_data), columns = test_data.columns)
+
+test_data.head().T
+
+	0 	1 	2 	3 	4
+Order_No 	0.680984 	0.450593 	0.027171 	0.542438 	0.756165
+User_Id 	0.887212 	0.964522 	0.569235 	0.769394 	0.317977
+Platform Type 	0.666667 	0.666667 	0.666667 	0.666667 	0.666667
+Personal or Business 	0.000000 	0.000000 	0.000000 	0.000000 	0.000000
+Placement - Day of Month 	0.866667 	0.533333 	0.866667 	0.533333 	0.333333
+Placement - Weekday (Mo = 1) 	0.333333 	0.666667 	0.500000 	0.000000 	0.166667
+Placement_Time 	0.625000 	0.375000 	0.312500 	0.437500 	0.312500
+Confirmation - Day of Month 	0.866667 	0.533333 	0.866667 	0.533333 	0.333333
+Confirmation - Weekday (Mo = 1) 	0.333333 	0.666667 	0.500000 	0.000000 	0.166667
+Confirmation_Time 	0.625000 	0.375000 	0.312500 	0.437500 	0.312500
+Arrival at Pickup - Day of Month 	0.866667 	0.533333 	0.866667 	0.533333 	0.333333
+Arrival at Pickup - Weekday (Mo = 1) 	0.333333 	0.666667 	0.500000 	0.000000 	0.166667
+Arrival_at_Pickup_Time 	0.600000 	0.400000 	0.266667 	0.466667 	0.266667
+Pickup - Day of Month 	0.866667 	0.533333 	0.866667 	0.533333 	0.333333
+Pickup - Weekday (Mo = 1) 	0.333333 	0.666667 	0.500000 	0.000000 	0.166667
+Pickup_Time 	0.625000 	0.375000 	0.250000 	0.437500 	0.250000
+Distance (KM) 	0.152174 	0.086957 	0.086957 	0.086957 	0.108696
+Temperature 	0.531541 	0.531541 	0.507937 	0.597884 	0.592593
+Precipitation in millimeters 	0.066179 	0.066179 	0.066179 	0.066179 	0.066179
+Pickup Lat 	0.351511 	0.564149 	0.500132 	0.501502 	0.534546
+Pickup Long 	0.643461 	0.417816 	0.501584 	0.462070 	0.476235
+Destination Lat 	0.299173 	0.371141 	0.372245 	0.303930 	0.397999
+Destination Long 	0.482393 	0.486387 	0.558690 	0.398835 	0.402794
+Rider_Id 	0.198537 	0.904911 	0.025078 	0.713689 	0.894462
+
+#Predicting Using the Test data
+
+y_predict = pd.Series(LR.predict(test_data))
+
+​
+
+y_predict.to_csv('predicted_4.csv')
+
+​
+
+​
+
+​
+
+​
+
+LR.score(x_test,y_test)
+
+0.33440195013008533
+
+With testing data
+
+# Import data
+
+test_data = pd.read_csv('Test.csv')
+
+test_data.shape
+
+(7068, 25)
+
+test_data.head().T
+
+	0 	1 	2 	3 	4
+Order No 	Order_No_19248 	Order_No_12736 	Order_No_768 	Order_No_15332 	Order_No_21373
+User Id 	User_Id_3355 	User_Id_3647 	User_Id_2154 	User_Id_2910 	User_Id_1205
+Vehicle Type 	Bike 	Bike 	Bike 	Bike 	Bike
+Platform Type 	3 	3 	3 	3 	3
+Personal or Business 	Business 	Business 	Business 	Business 	Business
+Placement - Day of Month 	27 	17 	27 	17 	11
+Placement - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Placement - Time 	4:44:10 PM 	12:57:35 PM 	11:08:14 AM 	1:51:35 PM 	11:30:28 AM
+Confirmation - Day of Month 	27 	17 	27 	17 	11
+Confirmation - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Confirmation - Time 	4:44:29 PM 	12:59:17 PM 	11:25:05 AM 	1:53:27 PM 	11:34:45 AM
+Arrival at Pickup - Day of Month 	27 	17 	27 	17 	11
+Arrival at Pickup - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Arrival at Pickup - Time 	4:53:04 PM 	1:20:27 PM 	11:33:20 AM 	2:02:41 PM 	11:47:19 AM
+Pickup - Day of Month 	27 	17 	27 	17 	11
+Pickup - Weekday (Mo = 1) 	3 	5 	4 	1 	2
+Pickup - Time 	5:06:47 PM 	1:25:37 PM 	11:57:54 AM 	2:16:52 PM 	11:56:04 AM
+Distance (KM) 	8 	5 	5 	5 	6
+Temperature 	NaN 	NaN 	22.8 	24.5 	24.4
+Precipitation in millimeters 	NaN 	NaN 	NaN 	NaN 	NaN
+Pickup Lat 	-1.33327 	-1.27264 	-1.29089 	-1.2905 	-1.28108
+Pickup Long 	36.8708 	36.7947 	36.823 	36.8096 	36.8144
+Destination Lat 	-1.30525 	-1.27701 	-1.27657 	-1.30338 	-1.26647
+Destination Long 	36.8224 	36.8239 	36.8514 	36.7907 	36.7922
+Rider Id 	Rider_Id_192 	Rider_Id_868 	Rider_Id_26 	Rider_Id_685 	Rider_Id_858
+
+#Dropping Columns that don't affect the target
+
+test_data.drop(['Order No','Vehicle Type','Placement - Time','Confirmation - Time','Arrival at Pickup - Time','Pickup - Time','Precipitation in millimeters','Personal or Business'], axis=1 , inplace=True)
+
+test_data.shape
+
+(7068, 17)
+
+#Checking the null values we have in our data
+
+test_data.isnull().sum()
+
+User Id                                    0
+Platform Type                              0
+Placement - Day of Month                   0
+Placement - Weekday (Mo = 1)               0
+Confirmation - Day of Month                0
+Confirmation - Weekday (Mo = 1)            0
+Arrival at Pickup - Day of Month           0
+Arrival at Pickup - Weekday (Mo = 1)       0
+Pickup - Day of Month                      0
+Pickup - Weekday (Mo = 1)                  0
+Distance (KM)                              0
+Temperature                             1437
+Pickup Lat                                 0
+Pickup Long                                0
+Destination Lat                            0
+Destination Long                           0
+Rider Id                                   0
+dtype: int64
+
+#Dropping two other Columns that don't affect the Depression
+
+test_data.drop(['User Id','Rider Id'], axis=1 , inplace=True)
+
+#Dropping two other Columns that don't affect the Depression
+
+test_data.drop(['Temperature','Pickup Lat','Pickup Long','Destination Lat','Destination Long'], axis=1 , inplace=True)
+
+test_data.shape
+
+(7068, 10)
+
+#Filling the Missing/Null Values with mean for temperature
+
+test_data = test_data.fillna(test_data.mean())
+
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+
+​
+
+#scaler = MinMaxScaler()
+
+test_data_scale = pd.DataFrame(scaler.fit_transform(test_data), columns = test_data.columns)
+
+test_data_scale.head().T
+
+	0 	1 	2 	3 	4
+Platform Type 	0.397268 	0.397268 	0.397268 	0.397268 	0.397268
+Placement - Day of Month 	1.296507 	0.157040 	1.296507 	0.157040 	-0.526641
+Placement - Weekday (Mo = 1) 	-0.158057 	1.107114 	0.474528 	-1.423227 	-0.790642
+Confirmation - Day of Month 	1.296507 	0.157040 	1.296507 	0.157040 	-0.526641
+Confirmation - Weekday (Mo = 1) 	-0.158057 	1.107114 	0.474528 	-1.423227 	-0.790642
+Arrival at Pickup - Day of Month 	1.296507 	0.157040 	1.296507 	0.157040 	-0.526641
+Arrival at Pickup - Weekday (Mo = 1) 	-0.158057 	1.107114 	0.474528 	-1.423227 	-0.790642
+Pickup - Day of Month 	1.296507 	0.157040 	1.296507 	0.157040 	-0.526641
+Pickup - Weekday (Mo = 1) 	-0.158057 	1.107114 	0.474528 	-1.423227 	-0.790642
+Distance (KM) 	-0.261685 	-0.799773 	-0.799773 	-0.799773 	-0.620410
+
+test_data_scale.dtypes
+
+Platform Type                           float64
+Placement - Day of Month                float64
+Placement - Weekday (Mo = 1)            float64
+Confirmation - Day of Month             float64
+Confirmation - Weekday (Mo = 1)         float64
+Arrival at Pickup - Day of Month        float64
+Arrival at Pickup - Weekday (Mo = 1)    float64
+Pickup - Day of Month                   float64
+Pickup - Weekday (Mo = 1)               float64
+Distance (KM)                           float64
+dtype: object
+
+#Predicting Using the Test data
+
+y_predict = pd.Series(LR.predict(test_data_scale))
+
+​
+
+y_predict.to_csv('predicted_1.csv')
+
+---------------------------------------------------------------------------
+ValueError                                Traceback (most recent call last)
+<ipython-input-79-073280a0b9bd> in <module>
+      1 #Predicting Using the Test data
+----> 2 y_predict = pd.Series(LR.predict(test_data_scale))
+      3 
+      4 y_predict.to_csv('predicted_1.csv')
+
+C:\ProgramData\Anaconda3\lib\site-packages\sklearn\linear_model\base.py in predict(self, X)
+    211             Returns predicted values.
+    212         """
+--> 213         return self._decision_function(X)
+    214 
+    215     _preprocess_data = staticmethod(_preprocess_data)
+
+C:\ProgramData\Anaconda3\lib\site-packages\sklearn\linear_model\base.py in _decision_function(self, X)
+    196         X = check_array(X, accept_sparse=['csr', 'csc', 'coo'])
+    197         return safe_sparse_dot(X, self.coef_.T,
+--> 198                                dense_output=True) + self.intercept_
+    199 
+    200     def predict(self, X):
+
+C:\ProgramData\Anaconda3\lib\site-packages\sklearn\utils\extmath.py in safe_sparse_dot(a, b, dense_output)
+    171         return ret
+    172     else:
+--> 173         return np.dot(a, b)
+    174 
+    175 
+
+ValueError: shapes (7068,10) and (12,) not aligned: 10 (dim 1) != 12 (dim 0)
+
+​
+
