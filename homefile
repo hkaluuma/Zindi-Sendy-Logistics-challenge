@@ -838,40 +838,6 @@ dtype: object
 
 y_predict = pd.Series(LR.predict(test_data_scale))
 
-​
-
 y_predict.to_csv('predicted_1.csv')
 
----------------------------------------------------------------------------
-ValueError                                Traceback (most recent call last)
-<ipython-input-79-073280a0b9bd> in <module>
-      1 #Predicting Using the Test data
-----> 2 y_predict = pd.Series(LR.predict(test_data_scale))
-      3 
-      4 y_predict.to_csv('predicted_1.csv')
-
-C:\ProgramData\Anaconda3\lib\site-packages\sklearn\linear_model\base.py in predict(self, X)
-    211             Returns predicted values.
-    212         """
---> 213         return self._decision_function(X)
-    214 
-    215     _preprocess_data = staticmethod(_preprocess_data)
-
-C:\ProgramData\Anaconda3\lib\site-packages\sklearn\linear_model\base.py in _decision_function(self, X)
-    196         X = check_array(X, accept_sparse=['csr', 'csc', 'coo'])
-    197         return safe_sparse_dot(X, self.coef_.T,
---> 198                                dense_output=True) + self.intercept_
-    199 
-    200     def predict(self, X):
-
-C:\ProgramData\Anaconda3\lib\site-packages\sklearn\utils\extmath.py in safe_sparse_dot(a, b, dense_output)
-    171         return ret
-    172     else:
---> 173         return np.dot(a, b)
-    174 
-    175 
-
-ValueError: shapes (7068,10) and (12,) not aligned: 10 (dim 1) != 12 (dim 0)
-
-​
 
